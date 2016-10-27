@@ -15,6 +15,10 @@ public class Route {
     private SpatialVehicleLocation spatialVehicleLocation;    
     
     /**
+     * Default constructor
+     */
+    public Route(){}
+    /**
      * Create a new route to be traveled by the vehicle
      * @param passenger  passenger info
      * @param vehicleMovement instruction that conform the route
