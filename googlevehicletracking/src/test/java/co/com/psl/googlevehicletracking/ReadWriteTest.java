@@ -140,6 +140,27 @@ public class ReadWriteTest {
 	}
 
 	@Test
+	public final void testOptionalPassengerEmail() throws FileNotFoundException, IOException {
+
+		final int EXPECTED_NUMBER_OF_LINES_READ = 2;
+
+		CreateFile("in.txt", Arrays.asList("4785848123, JUAN MACHADO ,juanMachado@psl.com.co,FFFFLFFR",
+				"4325898712, MARIA DELGADO, RRFLFR"));
+
+		IReadWriteFile readWriteFile = new ReadWriteFile();
+		Route[] routes = readWriteFile.readInputFile();
+
+		assertEquals(EXPECTED_NUMBER_OF_LINES_READ, routes.length);
+		assertEquals(4785848123L, routes[0].getPassenger().getID());
+		assertEquals("JUAN MACHADO", routes[0].getPassenger().getName());
+		assertEquals("juanMachado@psl.com.co", routes[0].getPassenger().getEmail());
+		assertEquals(4325898712L, routes[1].getPassenger().getID());
+		assertEquals("MARIA DELGADO", routes[1].getPassenger().getName());
+		assertNull(routes[1].getPassenger().getEmail());
+
+	}
+
+	@Test
 	public final void testInvalidPassengerEmail() throws FileNotFoundException, IOException {
 
 		CreateFile("in.txt", Arrays.asList("4785848123, JUAN MACHADO ,juanMachadoApsl.com.co,FFFFLFFR",
@@ -188,7 +209,7 @@ public class ReadWriteTest {
 				"789587,PEDRO HEREDIA,pedro@google.com,FFLFDFR"));
 
 		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("The number of tokens for a route must be between 3 and 4");
+		thrown.expectMessage("The number of tokens for the route [4785848, JUAN MACHADO] must be between 3 and 4");
 
 		IReadWriteFile readWriteFile = new ReadWriteFile();
 		readWriteFile.readInputFile();
@@ -202,7 +223,8 @@ public class ReadWriteTest {
 				"4325898712, MARIA DELGADO, RRFLFR", "789587,PEDRO HEREDIA,pedro@google.com,FFLFFR,FFFFF"));
 
 		thrown.expect(IllegalArgumentException.class);
-		thrown.expectMessage("The number of tokens for a route must be between 3 and 4");
+		thrown.expectMessage(
+				"The number of tokens for the route [789587,PEDRO HEREDIA,pedro@google.com,FFLFFR,FFFFF] must be between 3 and 4");
 
 		IReadWriteFile readWriteFile = new ReadWriteFile();
 		readWriteFile.readInputFile();
